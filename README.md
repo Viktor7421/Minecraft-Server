@@ -100,6 +100,36 @@ Tras ello se puede verificar que los usuarios se puedan conectar al juego entran
 
 # Escalabilidad
 
+Para esta escalabilidad recomendamos principalmente recurrir a la escalabilidad vertical, ya que las principales operaciones de los servidores de minecraft se hacen en memoria. Por lo cual se dificulta particionar esa tarea en dos pods distintos. Sin embargo, minecraft es un juego con una comunidad bastante grande, por lo cual ya se han creado distintas modificaciones para el juego que pueden brindarnos un escalamiento horizontal pero atribuyendo eventos propios del juego o de las caracteristicas del servidor.
+
+![Nodo activado](/images/server-game-modes.jpg)
+
+Para ello primero hay que entender como son utilizados actualmente los servidores de minecraft. Uno de los servidores bastante conocido dentro de la comunidad es hypixel y este brinda los siguientes modos de juego:
+- Bed Wars
+- Sky Wars
+- Murder Mystery
+- Arcade Games
+- UHC Champions
+- Areana Brawl
+- Build Battle
+- Cops and Crims
+- Duels
+- Mega Walls
+- Paintball Warfare
+- Quackcraft
+- Blitz Survival Games
+- Smash Heroes
+- The TNT Games
+- Turbo Kart Racers
+- VampireZ
+- The Walls
+- Warlords
+Como vemos son 19 modos de juegos distintos. Si al servidor se conectan cerca de 1000 usuarios y cada usuarios juega uno de los modos mencionados anteriormente se puede generar una saturación en los recursos utilizados para ejecutar el servidor. Sin embargo, si dividimos estos modos de juego en servidores más pequeños ejecutando unicamente lo necesario, podemos optimizar mejor los recursos del cluster. Para ello la comunidad actualmente usa una modificación llamada [bungeecord](https://www.spigotmc.org/wiki/sobre-bungeecord/) que funciona como un proxy que recibe a todos los jugadores que quieran entrar al servidor y los distribuyen en los distintos servidores que tenga el cluster.
 
 
+![Nodo activado](/images/escalabilidad.png)
+
+Como vemos en la imagen hemos asignado distintos nodos que responden a un modo de juego distinto y poseen sus caractaristicas distintas como la cantidad de usuarios. Sin embargo, en el último nodo decidimos asignarles más pods. Esto debido a que algunos modos de juego no generan cambios en disco y unicamente sirven para responder a operaciones exclusivas usuarios. Por ende podemos crear 2 pods para recibir a más usuarios y cada uno tenga un pod exclusivo donde realizar su juego tras finalizar liberar el recurso para otros jugadores.
+
+  
 
